@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <title>Aplicación de Gestión de Flotas de Vehículos</title>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #mapa { position: absolute; top: 0; bottom: 0; width: 100%; }
+        #formulario { position: absolute; top: 10px; left: 10px; background: rgba(255, 255, 255, 0.8); padding: 10px; z-index: 1; border-radius: 10px; }
+         body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        #mapa { position: absolute; top: 0; bottom: 0; width: 100%; }
+        #formulario { position: absolute; top: 10px; left: 10px; background: white; padding: 10px; z-index: 1; }
+        #formulario input[type="text"], 
+        #formulario input[type="number"] {
+        margin-bottom: 10px;
+        padding: 5px;
+        width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        }
+        #formulario button {
+        padding: 8px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        }
+        #formulario button:hover {
+        background-color: #0056b3;
+        }
+  </style>
+</head>
+<body>
+  <div id="formulario">
+    <input type="text" id="id-vehiculo" placeholder="ID del Vehículo">
+    <input type="text" id="status" placeholder="Estado (En ruta / Sin ruta)">
+    <input type="text" id="pointA-address" placeholder="Dirección Punto A">
+    <input type="text" id="pointB-address" placeholder="Dirección Punto B">
+    <input type="number" id="fuel-level" placeholder="Nivel de Combustible (%)">
+    <input type="number" id="avg-speed" placeholder="Velocidad Promedio (km/h)">
+    <input type="number" id="total-km" placeholder="Km Totales">
+    <button onclick="registrarVehiculo()">Registrar Vehículo</button>
+    <button onclick="reiniciarRutas()">Reiniciar Rutas</button>
+    <button id="rutas">Ver Rutas</button>
+    
+  </div>
+  <div id='mapa'></div>
+  <div id="instructions"></div>
+  <script src='https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js'></script>
+  <script>
+    document.getElementById('rutas').addEventListener('click', function(){
+     abrirRutas()
+    })
+    mapboxgl.accessToken = 'pk.eyJ1Ijoid2lsbGl3b25rYSIsImEiOiJjbHdyYnVhMDIwOGd5MmlvZ3lsZnRsbTg0In0.bSSPmW9wZJj0mqVX6z3Wsg';
+  </script>
+  <script src="main.js"></script>
+  <div id="ruta-details">
+      </div>
+
+</body>
+</html>

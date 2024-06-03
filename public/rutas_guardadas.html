@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutas Guardadas</title>
+    <style>
+        myTable {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Rutas Guardadas</h2>
+    <table id="myTable">
+        <thead>
+            <tr>
+              <th>Id</th>
+              <th>Estado</th>
+              <th>latitude Start</th>
+              <th>longitude Start</th>
+              <th>latitude End</th>
+              <th>longitude End</th>
+              <th>Gasolina</th>
+              <th>km/h</th>
+              <th>km Total</th>
+
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+    
+        </table>    
+
+    <script>
+    
+        document.addEventListener('DOMContentLoaded', ()=>{
+            let table = document.getElementById('myTable')
+            fetch('http://localhost:3000/database')
+            .then(response=>response.json())
+            .then(data=>{
+                data = data.filter((x)=> x.id !== '')
+                console.log(data)
+               
+                data.forEach(vehicle => {
+                    let row = table.insertRow();
+                    let cell1 = row.insertCell(0);
+                    let cell2 = row.insertCell(1);
+                    let cell3 = row.insertCell(2);
+                    let cell4 = row.insertCell(3);
+                    let cell5 = row.insertCell(4);
+                    let cell6 = row.insertCell(5);
+                    let cell7 = row.insertCell(6);
+                    let cell8 = row.insertCell(7);
+                    let cell9 = row.insertCell(8);
+                    cell1.innerHTML = vehicle.id;
+                    cell2.innerHTML = vehicle.status;
+                    cell3.innerHTML = vehicle.pointA.latitude;
+                    cell4.innerHTML = vehicle.pointA.longitude;
+                    cell5.innerHTML = vehicle.pointB.latitude;
+                    cell6.innerHTML = vehicle.pointB.longitude;
+                    cell7.innerHTML = vehicle.performance.fuelLevel;
+                    cell8.innerHTML = vehicle.performance.avgSpeed;
+                    cell9.innerHTML = vehicle.performance.totalKm;
+                });
+            })
+        })
+
+        var rutas = [
+            {
+                id: 1,
+                estado: "En ruta",
+                puntoA: "Dirección punto A",
+                puntoB: "Dirección punto B",
+                nivelCombustible: "Alto",
+                velocidadPromedio: "50 km/h",
+                kmTotales: "100 km"
+            },
+            {
+                id: 2,
+                estado: "Sin ruta",
+                puntoA: "Otra dirección punto A",
+                puntoB: "Otra dirección punto B",
+                nivelCombustible: "Medio",
+                velocidadPromedio: "40 km/h",
+                kmTotales: "80 km"
+            }
+        ];
+
+      
+    </script>
+</body>
+</html>

@@ -37,6 +37,45 @@
     }
     });
 
+
+// Ruta para actualizar un vehículo existente
+app.put('/vehicles/:id', async (req, res) => {
+    const { id } = req.params;
+    const { status, pointAAddress, pointBAddress, fuelLevel, avgSpeed, totalKm } = req.body;
+
+    try {
+        // Check if the vehicle exists
+        const vehicleIndex = vehicles.findIndex(vehicle => vehicle.id === id);
+        if (vehicleIndex === -1) {
+            return res.status(404).send({ message: 'Vehicle not found' });
+        }
+
+        // Geocode new addresses and get route if necessary
+        const pointA = pointAAddress ? await geocode(pointAAddress) : vehicles[vehicleIndex].pointA;
+        const pointB = pointBAddress ? await geocode(pointBAddress) : vehicles[vehicleIndex].pointB;
+        const { route, steps } = await getRoute(pointA, pointB);
+
+        // Update vehicle data
+        vehicles[vehicleIndex] = {
+            ...vehicles[vehicleIndex],
+            status,
+            pointA,
+            pointB,
+            route,
+            steps,
+            performance: { fuelLevel, avgSpeed, totalKm }
+        };
+
+        // Save the updated vehicles to the database
+        saveData(vehicles);
+
+        res.send({ message: 'Vehicle updated successfully', vehicle: vehicles[vehicleIndex] });
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+});
+
+    
     // Ruta para obtener la información completa de la flota
     app.get('/vehicles', (req, res) => {
     // Cargar los vehículos desde la base de datos
